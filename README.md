@@ -12,34 +12,30 @@ In this project, I built a regression model using CatBoost to predict the number
 📁 Files in this repo
 | File Name       | Description |
 |----------------|-------------|
-| **Iris.csv** | Dataset containing iris species data |
-| **iris_classifier.ipynb** | Jupyter notebook used for data exploration, model training, and evaluation |
-| **requirements.yaml** | Conda environment file for reproducibility |
-| **app.py** | The main Streamlit application |
-| **util.py** | Holds reusable functions for generating model performance visualizations |
-| **iris_svm_model_details.json** | json file containing model hyperparameter details for the best model |
-| **iris_svm_pipeline.joblib** | Pre-trained SVM model with scaling and tuning |
-| **label_encoder.joblib** | Label encoder used to transform species labels |
-| **app.py** | The main Streamlit application |
-| environment.yaml | Environment file for reproducibility |
+| app.py         | Streamlit app file |
+| test.csv       | Data for Kaggle submission |
+| model_report.json | json file containing model hyperparameter details |
+| Pre-trained SVM model with scaling and tuning
+|
+|
+| 01_load_clean_eda.ipynb | Jupyter notebook for data loading, cleaning and exploratory data analysis |
+| 02_modeling.ipynb | Jupyter notebook for model training, hyperparameter tuning, and evaluation |
+| feature_engineering.py | Python file for feature interactions |
+| img.webp  | Image for notebooks and streamlit app |
 
 🧠 Model Performance
 The final model achieved ~97% accuracy on both training and validation sets, indicating good generalization and no signs of overfitting. I used GridSearchCV to tune the C, gamma, and kernel parameters of the SVM.
 
 🌐 Web App
-You can interact with the model using the Streamlit app. Users can input measurements via sliders and instantly see the predicted species. A dynamic plot visualizes where your flower lands in PCA space with GMM density contours and an annotated prediction arrow.
+You can interact with the model using the Streamlit app. Users can input information about their workout and predict calories burned.
 
 📌 Key Features
-End-to-end pipeline: preprocessing + SVM
-
-PCA and GMM for visualizing density in a dimensionality reduced feature space
-
-Live visualization with prediction annotation in Streamlit
+End-to-end pipeline: preprocessing + CatBoost Regressor
 
 Caches and modular functions for performance
 
 💻 Live Demo
-👉 Check out the Iris Species Classifier App
+👉 Check out the App
 
 🚀 Getting Started
 Set up the environment
