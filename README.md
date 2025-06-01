@@ -5,31 +5,9 @@
 A machine learning project that predicts the number of calories burned during a workout using CatBoost Regressor and a Streamlit app.
 
 ##🔍 Project Overview
-
-@misc{playground-series-s5e5,
-    author = {Walter Reade and Elizabeth Park},
-    title = {Predict Calorie Expenditure},
-    year = {2025},
-    howpublished = {\url{https://kaggle.com/competitions/playground-series-s5e5}},
-    note = {Kaggle}
-}
-
 ### 📚 Citation
-
 Reade, W., & Park, E. (2025). *Predict Calorie Expenditure*. Kaggle.  
 Available at: [https://kaggle.com/competitions/playground-series-s5e5](https://kaggle.com/competitions/playground-series-s5e5)
-
-<details>
-<summary>Click to view BibTeX</summary>
-
-```bibtex
-@misc{playground-series-s5e5,
-    author = {Walter Reade and Elizabeth Park},
-    title = {Predict Calorie Expenditure},
-    year = {2025},
-    howpublished = {\url{https://kaggle.com/competitions/playground-series-s5e5}},
-    note = {Kaggle}
-}
 
 
 In this project, I built a regression model using CatBoost to predict the number of calories burned during a workout. CatBoost, Decision Tree, Random Forest, and XGBoost were used for model selection. I applied hyperparameter tuning and feature engineering to the second best performing model, CatBoost, achieving an RMSLE score of on my test set. CatBoost was selected because it can leverage the power of gpu. The final result is an interactive web app powered by Streamlit that provides project background and model prediction for user inputs.
