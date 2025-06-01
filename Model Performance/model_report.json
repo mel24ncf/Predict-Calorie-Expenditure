@@ -1,0 +1,18 @@
+{
+    "model_type": "CatBoostRegressor",
+    "best_hyperparameters": {
+        "model__iterations": 2500,
+        "model__depth": 12,
+        "model__learning_rate": 0.05,
+        "model__l2_leaf_reg": 5,
+        "model__border_count": 256
+    },
+    "evaluation_metrics": {
+        "train_rmsle": 0.05665218941778541,
+        "test_rmsle": 0.058714077266472646
+    },
+    "preprocessing_steps": [
+        "FeatureEngineering",
+        "StandardScaler"
+    ]
+}
