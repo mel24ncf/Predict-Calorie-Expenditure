@@ -5,12 +5,11 @@ import numpy as np
 import sys
 import os
 
-# Add the parent directory of the current file (project root) to sys.path
+# Add the parent directory of (project root) to sys.path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 class FeatureEngineering(BaseEstimator, TransformerMixin):
     def __init__(self):
-        # You can later add flags here to control which features to add
         pass
 
     def fit(self, X, y=None):
