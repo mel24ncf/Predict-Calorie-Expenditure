@@ -15,13 +15,12 @@ In this project, I built a regression model using CatBoost to predict the number
 | app.py         | Streamlit app file |
 | test.csv       | Data for Kaggle submission |
 | model_report.json | json file containing model hyperparameter details |
-| Pre-trained SVM model with scaling and tuning
-|
-|
+| model_pipeline.zip | zip folder containing trained CatBoost model with scaling and feature engineering pipeline |
 | 01_load_clean_eda.ipynb | Jupyter notebook for data loading, cleaning and exploratory data analysis |
 | 02_modeling.ipynb | Jupyter notebook for model training, hyperparameter tuning, and evaluation |
 | feature_engineering.py | Python file for feature interactions |
 | img.webp  | Image for notebooks and streamlit app |
+| environment.yml | yaml file contain packages for environment setup |
 
 🧠 Model Performance
 The final model achieved ~97% accuracy on both training and validation sets, indicating good generalization and no signs of overfitting. I used GridSearchCV to tune the C, gamma, and kernel parameters of the SVM.
