@@ -1,6 +1,3 @@
-# Predict-Calorie-Expenditure
-
-
 # 🏋️ Predict Calorie Expenditure
 A machine learning project that predicts the number of calories burned during a workout using CatBoost Regressor and a Streamlit app.
 
