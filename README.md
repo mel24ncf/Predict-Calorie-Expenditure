@@ -10,17 +10,19 @@ Available at: [https://kaggle.com/competitions/playground-series-s5e5](https://k
 In this project, I built a regression model using CatBoost to predict the number of calories burned during a workout. CatBoost, Decision Tree, Random Forest, and XGBoost were used for model selection. I applied hyperparameter tuning and feature engineering to the second best performing model, CatBoost, achieving an RMSLE score of on my test set. CatBoost was selected because it can leverage the power of gpu. The final result is an interactive web app powered by Streamlit that provides project background and model prediction for user inputs.
 
 📁 Files in this repo
-File Name	Description
-Iris.csv	Dataset containing iris species data
-iris_classifier.ipynb	Jupyter notebook used for data exploration, model training, and evaluation
-requirements.yaml	Conda environment file for reproducibility
-app.py	The main Streamlit application
-util.py	Holds reusable functions for generating model performance visualizations
-iris_svm_model_details.json	json file containing model hyperparameter details for the best model
-iris_svm_pipeline.joblib	Pre-trained SVM model with scaling and tuning
-label_encoder.joblib	Label encoder used to transform species labels
-app.py	The main Streamlit application
-environment.yaml	Environment file for reproducibility
+| File Name       | Description |
+|----------------|-------------|
+| **Iris.csv** | Dataset containing iris species data |
+| **iris_classifier.ipynb** | Jupyter notebook used for data exploration, model training, and evaluation |
+| **requirements.yaml** | Conda environment file for reproducibility |
+| **app.py** | The main Streamlit application |
+| **util.py** | Holds reusable functions for generating model performance visualizations |
+| **iris_svm_model_details.json** | json file containing model hyperparameter details for the best model |
+| **iris_svm_pipeline.joblib** | Pre-trained SVM model with scaling and tuning |
+| **label_encoder.joblib** | Label encoder used to transform species labels |
+| **app.py** | The main Streamlit application |
+| environment.yaml | Environment file for reproducibility |
+
 🧠 Model Performance
 The final model achieved ~97% accuracy on both training and validation sets, indicating good generalization and no signs of overfitting. I used GridSearchCV to tune the C, gamma, and kernel parameters of the SVM.
 
