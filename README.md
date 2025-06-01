@@ -7,7 +7,7 @@ Reade, W., & Park, E. (2025). *Predict Calorie Expenditure*. Kaggle.
 Available at: [https://kaggle.com/competitions/playground-series-s5e5](https://kaggle.com/competitions/playground-series-s5e5)
 
 
-In this project, I built a regression model using CatBoost to predict the number of calories burned during a workout. CatBoost, Decision Tree, Random Forest, and XGBoost were used for model selection. I applied hyperparameter tuning and feature engineering to the second best performing model, CatBoost, achieving an RMSLE score of 0.06302 on the submission data and an RMSLE of 0.0587 of my test set. CatBoost was selected because it can leverage the power of gpu. The final result is an interactive web app powered by Streamlit that provides project background and model prediction for user inputs.
+In this project, I built a regression model using CatBoost to predict the number of calories burned during a workout. CatBoost, Decision Tree, Random Forest, and XGBoost were used for model selection. I applied hyperparameter tuning and feature engineering to the second best performing model, CatBoost, achieving an RMSLE score of 0.06302 on the submission data and an RMSLE of 0.0587 of my test set. CatBoost was selected because it supports GPU acceleration, enabling faster tuning and training. The final result is an interactive web app powered by Streamlit that provides project background and model prediction for user inputs.
 
 📁 Files in this repo
 | File Name       | Description |
@@ -41,5 +41,6 @@ Caches and modular functions for performance
 Set up the environment
 To install all necessary dependencies, run:
 
+```bash
 conda env create -f environment.yml
 conda activate calorie-env
