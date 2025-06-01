@@ -4,7 +4,7 @@
 # 🏋️ Predict Calorie Expenditure
 A machine learning project that predicts the number of calories burned during a workout using CatBoost Regressor and a Streamlit app.
 
-##🔍 Project Overview
+## 🔍 Project Overview
 ### 📚 Citation
 Reade, W., & Park, E. (2025). *Predict Calorie Expenditure*. Kaggle.  
 Available at: [https://kaggle.com/competitions/playground-series-s5e5](https://kaggle.com/competitions/playground-series-s5e5)
