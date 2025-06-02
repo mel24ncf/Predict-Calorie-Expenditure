@@ -1,0 +1,16 @@
+name: calorie-env
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.10
+  - pandas
+  - numpy
+  - matplotlib
+  - seaborn
+  - scikit-learn
+  - statsmodels
+  - streamlit
+  - xgboost
+  - catboost
+  - joblib
