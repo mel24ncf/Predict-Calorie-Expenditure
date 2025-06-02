@@ -35,7 +35,7 @@ End-to-end pipeline: preprocessing + CatBoost Regressor
 Caches and modular functions for performance
 
 💻 Live Demo
-👉 Check out the App
+👉 [Check out the App ](https://predict-calorie-expenditure.streamlit.app/)
 
 🚀 Getting Started
 Set up the environment
