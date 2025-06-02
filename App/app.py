@@ -38,7 +38,8 @@ def load_data():
     Returns:
     - DataFrame containing the training data
     """
-    return pd.read_csv("../Data/train_sample.csv").drop(columns=['id'])
+    data_path = os.path.join(project_root, "Data", "train_sample.csv")
+    return pd.read_csv(data_path).drop(columns=['id'])
 df = load_data()
 
 # Load the model (final pipeline)
