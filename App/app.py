@@ -24,7 +24,9 @@ st.title("How Many Calories Did You Burn?")
 st.subheader("🔥 Predict calories burned from your workout")
 
 # Display an image 
-image = Image.open("../Utils/gym.jpeg")
+#image = Image.open("../Utils/gym.jpeg")
+image_path = os.path.join(project_root, "Utils", "gym.jpeg")
+image = Image.open(image_path)
 st.image(image, caption="Calorie Burn Prediction")
 
 # Load the dataset
