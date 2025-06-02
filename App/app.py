@@ -35,7 +35,7 @@ def load_data():
     Returns:
     - DataFrame containing the training data
     """
-    return pd.read_csv("../Data/train.csv").drop(columns=['id'])
+    return pd.read_csv("../Data/train_sample.csv").drop(columns=['id'])
 df = load_data()
 
 # Unzip if not already extracted
