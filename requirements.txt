@@ -5,6 +5,5 @@ matplotlib
 seaborn
 scikit-learn
 statsmodels
-streamlit
 catboost
 joblib
