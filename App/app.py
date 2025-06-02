@@ -14,6 +14,7 @@ app_dir = os.path.dirname(__file__)
 project_root = os.path.abspath(os.path.join(app_dir, ".."))
 model_zip_path = os.path.join(project_root, "Model", "final_pipeline.zip")
 extract_path = os.path.join(project_root, "Model", "unzipped_model")
+model_file = os.path.join(extract_path, "final_pipeline.pkl")
 
 # Add utility path
 sys.path.append(os.path.join(project_root, "Utils"))
@@ -38,11 +39,6 @@ def load_data():
     return pd.read_csv("../Data/train_sample.csv").drop(columns=['id'])
 df = load_data()
 
-# Unzip if not already extracted
-if not os.path.exists(extract_path):
-    with zipfile.ZipFile(model_zip_path, "r") as zip_ref:
-        zip_ref.extractall(extract_path)
-
 # Load the model (final pipeline)
 @st.cache_resource
 def load_model():
@@ -52,9 +48,10 @@ def load_model():
     Returns:
     - Loaded model
     """
-    #return joblib.load("../Model/final_pipeline.pkl")
-    model_path = os.path.join(extract_path, "final_pipeline.pkl")
-    return joblib.load(model_path)
+    if not os.path.exists(model_file):
+        with zipfile.ZipFile(model_zip_path, "r") as zip_ref:
+            zip_ref.extractall(extract_path)
+    return joblib.load(model_file)
 model = load_model()
 
 # Set defaults for model inputs (heart rate and body temperature)
@@ -190,8 +187,8 @@ def convert_df_to_csv(df):
 # Add a download button for the dataset
 csv = convert_df_to_csv(df)
 st.download_button(
-    label="Download Full Dataset",
+    label="Download Train Sample (350k) Dataset",
     data=csv,
-    file_name='calories_dataset.csv',
-    mime='text/csv',
+    file_name="calories_dataset.csv",
+    mime="text/csv",
 )
