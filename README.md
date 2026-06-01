@@ -7,7 +7,7 @@ Streamlit web application.
 [![Kaggle](https://img.shields.io/badge/Kaggle-Competition-20BEFF?logo=kaggle)](https://kaggle.com/competitions/playground-series-s5e5)
 ![Python](https://img.shields.io/badge/Python-3.10+-blue?logo=python)
 
----
+--- 
 
 ## 🔍 Project Overview
 
