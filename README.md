@@ -2,7 +2,7 @@
 
 A production-style end-to-end machine learning pipeline predicting calories burned during exercise using a tuned XGBoost Regressor, deployed as an interactive 
 Streamlit web application.
-
+ 
 [![Live App](https://img.shields.io/badge/Streamlit-Live%20App-FF4B4B?logo=streamlit)](https://calorie-expenditure-prediction.streamlit.app/)
 [![Kaggle](https://img.shields.io/badge/Kaggle-Competition-20BEFF?logo=kaggle)](https://kaggle.com/competitions/playground-series-s5e5)
 ![Python](https://img.shields.io/badge/Python-3.10+-blue?logo=python)
