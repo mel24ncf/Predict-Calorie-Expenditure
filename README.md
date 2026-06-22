@@ -1,61 +1,124 @@
 # Calorie Expenditure Prediction
 
-A production-style end-to-end machine learning pipeline predicting calories burned during exercise using a tuned XGBoost Regressor, deployed as an interactive 
-Streamlit web application.
- 
-[![Live App](https://img.shields.io/badge/Streamlit-Live%20App-FF4B4B?logo=streamlit)](https://calorie-expenditure-prediction.streamlit.app/)
-[![Kaggle](https://img.shields.io/badge/Kaggle-Competition-20BEFF?logo=kaggle)](https://kaggle.com/competitions/playground-series-s5e5)
-![Python](https://img.shields.io/badge/Python-3.10+-blue?logo=python)
+Predicting calories burned during exercise using physiological and workout-based features from the Kaggle Playground Series S5E5 dataset. The final XGBoost regression pipeline is deployed as an interactive Streamlit web application.
 
---- 
+👉 **[Try the live app](https://calorie-expenditure-prediction.streamlit.app/)** — enter workout and body metrics to generate a calorie prediction
 
-## 🔍 Project Overview
+**[Modeling notebook](notebooks/02_modeling.ipynb)** · **[EDA notebook](notebooks/01_load_clean_eda.ipynb)**
 
-> Reade, W., & Park, E. (2025). *Predict Calorie Expenditure*. Kaggle.  
-> https://kaggle.com/competitions/playground-series-s5e5
+---
 
-This project builds an end-to-end regression pipeline to predict calories burned during a workout session using physiological and workout based features:
-* Age 
-* Height
-* Weight
-* Session Duration
-* Heart Rate
-* Body Temperature
-* Sex 
+## Results
 
-Four models were evaluated:
-* Ridge Regression
-* Decision Tree
-* Random Forest
-* XGBoost (Champion Model)
+Four regression models were evaluated using RMSLE. XGBoost achieved the strongest performance, improving over linear and tree-based baselines while maintaining strong holdout generalization.
 
-After hyperparameter tuning and feature engineering, the final model achieved:
+| Model            |   CV RMSLE |
+| ---------------- | ---------: |
+| Ridge Regression |     0.1504 |
+| Decision Tree    |     0.0769 |
+| Random Forest    |     0.0703 |
+| **XGBoost** ✓    | **0.0621** |
 
-🏆 Kaggle Public RMSLE: 0.05924
+After feature engineering and randomized hyperparameter tuning, the final model achieved:
 
-The trained model is wrapped in a TransformedTargetRegressor (log-transform on target) and deployed with Streamlit.
+| Metric                                |       Score |
+| ------------------------------------- | ----------: |
+| Kaggle Public RMSLE                   | **0.05924** |
+| Mean CV-Test RMSLE — Baseline XGBoost |      0.0621 |
+| Mean CV-Test RMSLE — Tuned XGBoost    |      0.0601 |
+| Holdout Test RMSLE                    |      0.0602 |
 
-## Production Pipeline Architecture 
-The final model is a fully reproducible sklearn pipeline:
+Hyperparameter tuning reduced mean CV-test RMSLE from **0.0621 to 0.0601**, and the tuned model generalized closely to the holdout test set with **0.0602 RMSLE**.
 
-```
-TransformedTargetRegressor (log1p / expm1)
+---
+
+## Why This Problem
+
+Calorie expenditure is difficult to estimate accurately because it depends on both workout intensity and individual physiological characteristics. Duration alone is not enough: two people can exercise for the same amount of time but burn different calories depending on heart rate, body size, sex, body temperature, and intensity.
+
+This project frames calorie prediction as a supervised regression problem and builds a deployable model that can estimate calories burned from user-provided workout and body metrics.
+
+---
+
+## Modeling Approach
+
+### XGBoost as the champion model
+
+XGBoost was selected as the final model because calorie expenditure is driven by nonlinear relationships between workout intensity and physiological features. Heart rate, duration, body temperature, weight, and engineered interaction terms can combine in ways that linear models may not capture well.
+
+Compared with Ridge Regression, Decision Tree, and Random Forest baselines, XGBoost produced the lowest cross-validated RMSLE and strong holdout performance.
+
+### Log-transforming the target
+
+The final model is wrapped in a `TransformedTargetRegressor` using `log1p` and `expm1`. This aligns training with RMSLE, reduces the impact of large calorie values, and improves prediction stability for a positively skewed target.
+
+### Validation strategy
+
+Models were compared using cross-validated RMSLE. Hyperparameter tuning was performed with `RandomizedSearchCV` using shuffled K-fold cross-validation and a fixed `random_state` for reproducibility. Final performance was evaluated on a separate holdout test split.
+
+---
+
+## Feature Engineering
+
+Three features were engineered to improve model signal:
+
+| Feature               | Formula / Logic                           | Purpose                                        |
+| --------------------- | ----------------------------------------- | ---------------------------------------------- |
+| BMI                   | `weight / height²`                        | Captures body-size-adjusted mass               |
+| BMR                   | Derived from sex, age, height, and weight | Estimates baseline energy expenditure          |
+| Duration × Heart Rate | `Duration * Heart_Rate`                   | Captures combined workout length and intensity |
+
+These were implemented in a custom sklearn-compatible transformer so feature generation occurs consistently during training and inference.
+
+---
+
+## Interpretability
+
+SHAP analysis indicates that workout intensity features are the strongest drivers of predicted calorie expenditure. The engineered `Duration_X_HR` interaction term is the most influential feature, followed by physiological and workout variables such as heart rate, duration, body temperature, and weight.
+
+<p align="center">
+  <img src="artifacts/shap_summary_xgb.png" width="70%" />
+</p>
+
+---
+
+## Pipeline Architecture
+
+The final model is a fully reproducible sklearn pipeline, serialized as a `.joblib` artifact containing preprocessing, feature engineering, target transformation, and the trained XGBoost regressor:
+
+```text
+TransformedTargetRegressor
+├── target transform: log1p / expm1
 └── Pipeline
     ├── FeatureEngineering()          # BMI, BMR, Duration_X_HR
     ├── ColumnTransformer
-    │   ├── OneHotEncoder             # Sex
-    │   └── passthrough               # Age, Height, Weight, Duration, Heart_Rate, Body_Temp
+    │   ├── Categorical: OneHotEncoder
+    │   └── Numerical: passthrough
     └── XGBRegressor
 ```
 
-This helps with 
-- Reducing data leakage
-- Consistent transformations at inference
-- Preprocessing
-- Saving full model (.joblib artifact)
+This ensures that the same transformations used during training are applied during inference in the Streamlit app.
 
-## 📁 Repository Structure
-```
+---
+
+## Live Demo
+
+Deployed with Streamlit Community Cloud · **[Open app](https://calorie-expenditure-prediction.streamlit.app/)**
+
+The app:
+
+* Accepts height in feet/inches
+* Accepts weight in pounds
+* Converts user inputs to metric units internally
+* Builds a single-row prediction DataFrame
+* Passes the input through the full trained pipeline
+* Returns the predicted calories burned
+
+---
+
+## Repository Structure
+
+```text
 calorie-burn-prediction/
 ├── app/
 │   └── app.py                      # Streamlit web app
@@ -69,143 +132,50 @@ calorie-burn-prediction/
 │   ├── test_split.csv              # Local test split
 │   └── submission.csv              # Kaggle submission file
 ├── model/
-│   └── xgb_calories_model.joblib   # Trained XGBoost pipeline (preprocessing + model)
+│   └── xgb_calories_model.joblib   # Trained XGBoost pipeline
 ├── notebooks/
 │   ├── 01_load_clean_eda.ipynb     # Data loading, cleaning, and EDA
 │   └── 02_modeling.ipynb           # Model training, tuning, and evaluation
 ├── src/
 │   ├── __init__.py
 │   └── feature_engineering.py      # Custom feature engineering transformer
-├── requirements.txt                # Production dependencies (Streamlit Cloud)
-├── requirements-dev.txt            # Development dependencies (Jupyter, SHAP, etc.)
+├── requirements.txt                # Production dependencies
+├── requirements-dev.txt            # Development dependencies
 └── README.md
 ```
 
 ---
 
-## 🧠 Model Performance
+## Getting Started
 
-| Metric | Score |
-|--------|-------|
-| Kaggle Public RMSLE | 0.05924 |
-| Mean CV-Test RMSLE (Baseline XGBoost) | 0.0621 |
-| Mean CV-Test RMSLE (Tuned XGBoost) | 0.0601 |
-| Holdout Test RMSLE | 0.0602 |
-
-Hyperparameter tuning via RandomizedSearchCV (20 iterations) reduced CV-Test RMSLE from 0.0621 to 0.0601, with the tuned model generalizing to a holdout test set (RMSLE 0.0602).
-
----
-
-## 💡 Methodology
-1️⃣ Exploratory Data Analysis
-
-- Distribution inspection
-- Outlier detection
-- Correlation analysis
-
-2️⃣ Feature Engineering
-
-Custom sklearn transformer:
-
-src/feature_engineering.py
-
-Engineered features include:
-
-- Body Mass Index (BMI)
-- Basal Metabolic Rate (BMR)
-- Duration_X_HR
-
----
-
-3️⃣ Model Selection
-
-Models compared using cross-validated RMSLE:
-
-| Model | CV RMSLE |
-|-------|----------|
-| Ridge | 0.1504 |
-| Decision Tree | 0.0769 |
-| Random Forest | 0.0703 |
-| XGBoost | 0.0621 |
-
-XGBoost was selected due to:
-
-- Lowest validation RMSLE
-- Relatively small overfit between cv-train and cv-test RMSLE
-- Fast inference time
-- Strong ability to model nonlinear relationships
-
----
-
-4️⃣ Hyperparameter Tuning
-
-RandomizedSearchCV with:
-
-- KFold (shuffle=True, fixed random_state)
-- 20 iterations
-- Optimized for neg_root_mean_squared_log_error
-- Final model retrained on full training data.
-
----
-
-5️⃣ SHAP Feature Importance
-
-<img width="789" height="580" alt="1b1c4833-8e8d-4192-95e1-2cc308407d17" src="https://github.com/user-attachments/assets/7a102acf-a21d-44d3-9e52-2c61e369752a" />
-
-SHAP analysis indicates that heart rate and duration are among the most influential predictors of calorie expenditure, and confirms that the engineered interaction term 
-of duration x heart rate is the most important of all features used. Physiological features (heart rate, body temperature) also contribute.
-
----
-
-## 🌐 Live Demo
-
-👉 **[predict-calorie-expenditure.streamlit.app](https://calorie-expenditure-prediction.streamlit.app/)
-
-The app:
-
-- Accepts height (feet/inches)
-- Accepts weight (lbs)
-- Converts to metric internally
-- Builds a single-row DataFrame
-- Passes through full pipeline
-- Returns calorie prediction
-
----
-
-## 🚀 Getting Started
-
-**1. Clone the repository**
 ```bash
+# Clone and enter the repo
 git clone https://github.com/melvinadkins/calorie-burn-prediction.git
 cd calorie-burn-prediction
-```
 
-**2. Create and activate a virtual environment**
-```bash
+# Create and activate virtual environment
 python -m venv venv
-source venv/bin/activate        # Mac/Linux
-venv\Scripts\activate           # Windows
-```
+source venv/bin/activate       # Mac/Linux
+venv\Scripts\activate          # Windows
 
-**3. Install dependencies**
-```bash
+# Install dependencies
 pip install -r requirements.txt
-```
 
-**4. Run the app locally**
-```bash
+# Run the app locally
 streamlit run app/app.py
 ```
 
 ---
 
-## 📌 Key Features
+## Key Features
 
-- End-to-end ML pipeline with preprocessing, feature engineering, and XGBoost Regressor
-- Modular utility function for reusable feature engineering
-- Streamlit app with cached model loading for performance
-- Reproducible notebooks with clear separation of EDA and modeling
+* End-to-end sklearn pipeline with feature engineering and XGBoost regression
+* Target transformation using `log1p` / `expm1` for RMSLE-aligned modeling
+* Custom feature engineering transformer for BMI, BMR, and workout intensity interaction
+* Streamlit deployment with cached model loading
+* Reproducible EDA and modeling notebooks
+* Kaggle submission workflow with holdout validation
 
 ---
 
-*Built as part of the Kaggle Playground Series (Season 5, Episode 5)*
+*Built using the Kaggle Playground Series S5E5 Predict Calorie Expenditure dataset.*
