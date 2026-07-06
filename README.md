@@ -2,7 +2,7 @@
 
 Predicting calories burned during exercise using physiological and workout-based features from the Kaggle Playground Series S5E5 dataset. The final XGBoost regression pipeline is deployed as an interactive Streamlit web application.
 
-👉 **[Try the live app](https://calorie-expenditure-prediction.streamlit.app/)** — enter workout and body metrics to generate a calorie prediction
+👉 **[Try the live app](https://calorie-expenditure-prediction.streamlit.app/)** - enter workout and body metrics to generate a calorie prediction
 
 **[Modeling notebook](notebooks/02_modeling.ipynb)** · **[EDA notebook](notebooks/01_load_clean_eda.ipynb)**
 
